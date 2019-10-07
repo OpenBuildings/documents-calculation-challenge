@@ -6,7 +6,7 @@ This is a small task to evaluate potential hires.
 
 ## The task
 
-The basic idea is, that we have a **csv** file, containing a list of invoices and credit notes in different currencies. The console command must take as an input the file, list of currency and exchnage rates, an output currency, an optional param to specify and filter a specific customer and return the sum of all the documents.
+We have a **CSV** file, containing a list of invoices and credit notes in different currencies. Create a ClI command taking the CSV file as an input, a list of currency and exchnage rates, an output currency, an optional param to specify and filter a specific customer and return the sum of all the documents.
 
 If the optional param is passed, the command should return the sumed documents, only for that specified customer.
 
@@ -14,18 +14,18 @@ Note, that if we have a credit note, it should substract from the total of the i
 
 ## Some pointers
 
-- The application MUST use only in memory storage
-- The application should comply to the PSR1 coding standarts and use a PSR4 autoloader
-- The application MUST be covered by unit tests
+- The application MUST use only in memory storage.
+- The application should comply to the PSR-2 coding standart and use a PSR-4 autoloader.
+- The application MUST be covered by unit tests.
 - The application MUST support different currencies and throw an exception, if an unsupported one is passed. The currencies can have different exchange rates, based on a default currency: EUR:GBP, EUR:BGN and so on.
-- Make the calculation service usable as a stand alone component
-- The application must handle the case, where the total of all the credit notes is bigger than the sum of the invoice
+- Make the calculation service usable as a stand alone component.
+- The application must handle the case, where the total of all the credit notes is bigger than the sum of the invoice.
 
 ## Example usage
 
 Command:
 
-```
+```bash
 ./console import path-to-file/import.csv EUR:1,USD:0.987,GBP:0.878 GBP --vat=123456789
 ```
 
@@ -50,7 +50,7 @@ Customer Clippings - 180.89 ERU
 
 ## Demo data
 
-The demo data can be found in the data.csv file
+The demo data can be found in the [`data.csv` file](./data.csv).
 
 Invoice types:
 
