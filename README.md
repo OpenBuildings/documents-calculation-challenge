@@ -18,15 +18,12 @@ Note, that if we have a credit note, it should substract from the total of the i
 - The application should comply to the PSR-2 coding standart and use a PSR-4 autoloader.
 - The application MUST be covered by unit tests.
 - The application MUST support different currencies and throw an exception, if an unsupported one is passed. The currencies can have different exchange rates, based on a default currency: EUR:GBP, EUR:BGN and so on.
-<<<<<<< HEAD
 - Make the calculation service usable as a stand alone component.
 - The application must handle the case, where the total of all the credit notes is bigger than the sum of the invoice.
-=======
 - The default currency is specified by giving it an exchange rate of 1, the EUR is used as a default currency only for the example.
 - Make the calculation service usable as a stand alone component
 - The application must handle the case, where the total of all the credit notes is bigger than the sum of the invoice
 - The application should throw an error, if a document has a specified parent, but the parent is missing.
->>>>>>> Update missing requirements
 
 ## Example usage
 
