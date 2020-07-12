@@ -1,0 +1,15 @@
+#!/usr/bin/php
+<?php
+
+use App\App;
+use App\Cli\Command\CommandFactory;
+use App\Cli\Output\CliPrinter;
+
+if (php_sapi_name() !== 'cli') {
+    exit;
+}
+
+require __DIR__ . '/../bootstrap.php';
+
+$app = new App(new CommandFactory(), new CliPrinter());
+$app->runCommand($argv[1], array_slice($argv, 2));
