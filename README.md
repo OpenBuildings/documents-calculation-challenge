@@ -1,6 +1,6 @@
 # [Clippings.com](https://clippings.com) invoicing command challange
 
-Clipping's challanges you to create a PHP console command, that lets you sum invoice documents in different currencies via a file.
+Clipping's challenges you to create a PHP console command, that lets you sum invoice documents in different currencies via a file.
 
 This is a small task to evaluate potential hires.
 
