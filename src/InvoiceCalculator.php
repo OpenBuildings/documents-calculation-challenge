@@ -25,11 +25,6 @@ class InvoiceCalculator implements FactoryInterface
     /**
      * @var array
      */
-    private $vatToCustomerMap = [];
-
-    /**
-     * @var array
-     */
     public static $allDocumentIds = [];
 
     /**
@@ -54,8 +49,6 @@ class InvoiceCalculator implements FactoryInterface
      */
     private function __construct()
     {
-        // could have used the constructor for object creation,
-        // but prefer to use a factory method (if there are multiple parameters)
     }
 
     /**
@@ -82,13 +75,14 @@ class InvoiceCalculator implements FactoryInterface
     public function getTotals($vatId = null): array
     {
         $totalSums = [];
+        $vatToCustomerMap = [];
         foreach ($this->csvData as $invoiceData) {
             if (!in_array($invoiceData['Parent document'], self::$allDocumentIds)
                 && $invoiceData['Parent document'] !== '') {
                 throw new \Exception("Invoice has parent document which is not found!");
             }
 
-            $this->mapVatToCustomer($invoiceData);
+            $this->mapVatToCustomer($invoiceData, $vatToCustomerMap);
 
             if (!isset($totalSums[$invoiceData['Customer']])) {
                 $totalSums[$invoiceData['Customer']] = 0; // add customer if not in totalSum
@@ -97,8 +91,8 @@ class InvoiceCalculator implements FactoryInterface
             $this->calculatePerCustomer($totalSums, $invoiceData);
         }
 
-        if ($vatId) {
-            $customer = $this->vatToCustomerMap[$vatId];
+        if ($vatId) { // if vat is passed from CLI
+            $customer = $vatToCustomerMap[$vatId];
             $totalSums = [$customer => $totalSums[$customer]];
         }
 
@@ -107,10 +101,11 @@ class InvoiceCalculator implements FactoryInterface
 
     /**
      * @param array $invoice
+     * @param array $vatToCustomerMap
      */
-    private function mapVatToCustomer(array $invoice): void
+    private function mapVatToCustomer(array $invoice, array &$vatToCustomerMap): void
     {
-        $this->vatToCustomerMap[$invoice['Vat number']] = $invoice['Customer'];
+        $vatToCustomerMap[$invoice['Vat number']] = $invoice['Customer'];
     }
 
     /**
@@ -123,11 +118,11 @@ class InvoiceCalculator implements FactoryInterface
         $currencyRate = $this->currencies[$invoice['Currency']]->getRate();
 
         switch ($invoice['Type']) {
-            case '1':
-            case '3':
+            case '1': // invoice
+            case '3': // debit
                 $totalSums[$invoice['Customer']] += round($invoice['Total'] * $currencyRate, 2);
                 break;
-            case '2':
+            case '2': // credit
                 $totalSums[$invoice['Customer']] -= round($invoice['Total'] * $currencyRate, 2);
                 break;
             default:
