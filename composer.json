@@ -1,0 +1,15 @@
+{
+    "name": "misikiyski/documents-calculation-challenge",
+    "description": "Miroslav Interview Task",
+    "autoload": {
+        "psr-4": {
+            "documents-calculation-challenge\\": "src"
+        }
+    },
+    "require": {
+        "phpunit/phpunit": "^8.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8"
+    }
+}
