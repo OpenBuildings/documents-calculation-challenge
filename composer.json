@@ -2,8 +2,12 @@
     "name": "misikiyski/documents-calculation-challenge",
     "description": "Miroslav Interview Task",
     "autoload": {
+        "files": [
+            "functions.php"
+        ],
         "psr-4": {
-            "documents-calculation-challenge\\": "src"
+            "App\\": "src",
+            "Interfaces\\": "src/Interfaces"
         }
     },
     "require": {
