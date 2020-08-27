@@ -7,7 +7,7 @@ use App\InvoiceCalculator;
 
 try {
     // parse CLI arguments
-    $csvData = parseCsvData(file($argv[1]));
+    $csvData = file($argv[1]);
     $currencies = parseCurrencies($argv[2]);
     $outputCurrency = $argv[3];
     $vatId = $argv[4] ?? null;
