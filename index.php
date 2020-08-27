@@ -33,9 +33,7 @@ try {
     }
 
     $instance = InvoiceCalculator::getInstance($csvData, $currencies);
-    foreach ($instance->getTotals($vatId) as $customer => $total) {
-        echo "$customer: " . round($total / $currencies[$outputCurrency]->getRate(), 2) . "$outputCurrency \n";
-    }
+    $instance->printCalculatedTotals($instance->getTotals($vatId), $outputCurrency);
 } catch (\Exception $e) {
     var_dump([
         'error' => $e->getMessage(),

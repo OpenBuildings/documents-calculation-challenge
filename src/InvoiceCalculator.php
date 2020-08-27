@@ -99,6 +99,22 @@ class InvoiceCalculator implements CalculatorFactoryInterface
     }
 
     /**
+     * @param array $totals
+     * @param null|string $outputCurrency
+     * @throws \Exception
+     */
+    public function printCalculatedTotals(array $totals, ?string $outputCurrency): void
+    {
+        if (!$outputCurrency) {
+            echo "Output currency is a mandatory parameter!\n";
+            throw new \Exception('Output currency is a mandatory parameter!');
+        }
+        foreach ($totals as $customer => $total) {
+            echo "$customer: " . round($total / $this->currencies[$outputCurrency]->getRate(), 2) . "$outputCurrency \n";
+        }
+    }
+
+    /**
      * @param array $invoice
      * @param array $vatToCustomerMap
      */
