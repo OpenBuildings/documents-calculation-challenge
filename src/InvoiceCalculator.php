@@ -2,13 +2,13 @@
 
 namespace App;
 
-use Interfaces\FactoryInterface;
+use Interfaces\CalculatorFactoryInterface;
 
 /**
  * Class InvoiceCalculator
  * @package App
  */
-class InvoiceCalculator implements FactoryInterface
+class InvoiceCalculator implements CalculatorFactoryInterface
 {
     /**
      * All supported currencies

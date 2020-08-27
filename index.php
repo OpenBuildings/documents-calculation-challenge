@@ -4,6 +4,10 @@ require_once "vendor/autoload.php";
 
 use App\Currency;
 use App\InvoiceCalculator;
+use App\Config;
+
+$config = new Config();
+Currency::$supportedCurrencies = $config->supported_currencies;
 
 try {
     // parse CLI arguments

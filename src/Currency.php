@@ -7,11 +7,7 @@ namespace App;
  */
 class Currency
 {
-    public static $supportedCurrencies = [
-        'EUR',
-        'USD',
-        'GBP'
-    ];
+    public static $supportedCurrencies = [];
 
     /**
      * @var string

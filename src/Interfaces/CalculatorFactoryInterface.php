@@ -2,7 +2,7 @@
 
 namespace Interfaces;
 
-interface FactoryInterface
+interface CalculatorFactoryInterface
 {
     /**
      * Builder method signature
