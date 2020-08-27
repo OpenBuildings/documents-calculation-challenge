@@ -11,28 +11,24 @@ if (count($argv) < 4) {
     exit(1);
 }
 
-use App\Currency;
-use App\InvoiceCalculator;
-
 $csvParser = new \App\CsvParser();
 $currencyParser = new \App\CurrencyParser();
 $config = new \App\Config();
-Currency::$supportedCurrencies = $config->supported_currencies;
+\App\Currency::$supportedCurrencies = $config->supported_currencies;
 
-// parse CLI arguments
-$csvData = $csvParser->validate($argv[1])->parseCsvData();
-$currencies = $currencyParser->validate($argv[2])->parseCurrencies();
-$outputCurrency = $currencyParser->validateOutputCurrency($argv[3]);
 $vatId = $argv[4] ?? null; // non mandatory parameter
-
 try {
+    $csvData = $csvParser->validate($argv[1])->parseCsvData();
+    $currencies = $currencyParser->validate($argv[2])->parseCurrencies();
+    $outputCurrency = $currencyParser->validateOutputCurrency($argv[3]);
+
     // reuse the same array for currency objects
     foreach ($currencies as $code => $rate) {
         unset($currencies[$code]);
-        $currencies[$code] = new Currency($code, $rate);
+        $currencies[$code] = new \App\Currency($code, $rate);
     }
 
-    $instance = InvoiceCalculator::getInstance($csvData, $currencies);
+    $instance = \App\InvoiceCalculator::getInstance($csvData, $currencies);
     $instance->printCalculatedTotals($instance->getTotals($vatId), $outputCurrency);
 } catch (\Exception $e) {
     var_dump([

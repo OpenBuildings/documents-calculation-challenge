@@ -10,14 +10,14 @@ class CurrencyParser implements ValidatorInterface
 
     /**
      * @param mixed $data
-     * @return mixed
+     * @return CurrencyParser
+     * @throws \Exception
      */
     public function validate($data): CurrencyParser
     {
         // if missing currencies or they are with trailing comma (means wrong format)
         if (!$data || substr($data, -strlen(',')) === ',') {
-            echo "Pass currencies as comma separated list on CLI!\n";
-            exit(1);
+            throw new \Exception("Pass currencies as comma separated list on CLI!");
         }
 
         $this->currencies = explode(',', $data);
@@ -27,16 +27,15 @@ class CurrencyParser implements ValidatorInterface
     /**
      * @param null|string $output
      * @return null|string
+     * @throws \Exception
      */
     public function validateOutputCurrency(?string $output)
     {
         if (!$output) {
-            echo "Output currency is a mandatory parameter";
-            exit(1);
+            throw new \Exception("Output currency is a mandatory parameter");
         }
         if (strlen($output) < 3) {
-            echo "Currency must be a valid ISO code!";
-            exit(1);
+            throw new \Exception("Currency must be a valid ISO code!");
         }
 
         return $output;

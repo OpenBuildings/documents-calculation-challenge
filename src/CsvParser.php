@@ -39,13 +39,16 @@ class CsvParser implements ValidatorInterface
     /**
      * @param mixed $data
      * @return CsvParser
+     * @throws \Exception
      */
     public function validate($data): CsvParser
     {
+        if (!$data) {
+            throw new \Exception("File path can't be null");
+        }
         $dataFile = file($data);
-        if (!$dataFile || !strpos($data, '.csv')) {
-            echo "CSV file not found or invalid format!";
-            exit(1);
+        if (!strpos($data, '.csv')) {
+            throw new \Exception("File is not CSV!");
         }
 
         $this->csv = $dataFile;
