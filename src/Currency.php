@@ -37,14 +37,6 @@ class Currency
     }
 
     /**
-     * @return string
-     */
-    public function getCurrency(): string
-    {
-        return $this->currency;
-    }
-
-    /**
      * @return float|int
      */
     public function getRate()

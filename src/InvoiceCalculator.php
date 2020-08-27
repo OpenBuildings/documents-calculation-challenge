@@ -31,14 +31,13 @@ class InvoiceCalculator implements CalculatorFactoryInterface
      * @param array $csvData
      * @param array $currencies
      * @return InvoiceCalculator
-     * @throws \Exception
      */
     public static function getInstance(
         array $csvData,
         array $currencies
     ): InvoiceCalculator {
         $instance = new self();
-        $instance->setData(self::parseCsvData($csvData));
+        $instance->setData($csvData);
         $instance->setCurrencies($currencies);
 
         return $instance;
@@ -65,30 +64,6 @@ class InvoiceCalculator implements CalculatorFactoryInterface
     private function setCurrencies(array $currency): void
     {
         $this->currencies = $currency;
-    }
-
-    /**
-     * @param array|null $csv
-     * @return array
-     * @throws \Exception
-     */
-    private static function parseCsvData(?array $csv): array
-    {
-        if (empty($csv)) {
-            throw new \Exception("CSV data file not found!");
-        }
-
-        $rows = array_map('str_getcsv', $csv);
-        $header = array_shift($rows);
-        $data = [];
-
-        for ($i = 0; $i < count($rows); $i++) {
-            $data[] = array_combine($header, $rows[$i]);
-            // use this loop to keep all document ids as static property
-            self::$allDocumentIds[] = (int)$data[$i]['Document number'];
-        }
-
-        return $data;
     }
 
     /**
