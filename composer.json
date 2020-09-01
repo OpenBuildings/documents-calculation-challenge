@@ -27,6 +27,7 @@
     }
   },
   "require": {
+    "php": "^7.3",
     "symfony/console": "5.1.4"
   },
   "require-dev": {
