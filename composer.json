@@ -1,0 +1,35 @@
+{
+  "name": "eroteev/documents-calculation-challenge",
+  "description": "Clippings.com invoicing command challenge",
+  "keywords": [
+    "challenge",
+    "component",
+    "invoice"
+  ],
+  "homepage": "https://github.com/eroteev/documents-calculation-challenge",
+  "type": "library",
+  "license": "BSD 3-Clause",
+  "minimum-stability": "stable",
+  "authors": [
+    {
+      "name": "Stefan Eroteev",
+      "email": "eroteev@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Finance\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Finance\\Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "symfony/console": "5.1.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "9.3.8"
+  }
+}
