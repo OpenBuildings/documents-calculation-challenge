@@ -35,9 +35,6 @@ class CurrencyConverter
         $this->rates = [];
         $this->baseCurrency = null;
 
-        if (strpos($exchangeRates, ',') === false) {
-            throw ExchangeRateFormatException::missingComma();
-        }
         foreach (explode(',', $exchangeRates) as $tuple) {
             if (strpos($tuple, ':') === false) {
                 throw ExchangeRateFormatException::missingColon();
