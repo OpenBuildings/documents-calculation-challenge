@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace Integration\Model\Data;
 
-use Finance\Model\CurrencyConverter;
 use Finance\Model\Data\CsvDataSource;
 use Finance\Model\Data\DataParseException;
-use Finance\Model\Exception\ExchangeRateFormatException;
 use PHPUnit\Framework\TestCase;
 
 class CsvDataSourceTest extends TestCase
