@@ -6,7 +6,6 @@ namespace Finance\Model\Exception;
 class  ExchangeRateFormatException extends \Exception
 {
     const MISSING_COLON = 1;
-    const MISSING_COMMA = 2;
     const INVALID_CURRENCY_FORMAT = 3;
     const INVALID_CURRENCY = 4;
     const INVALID_EXCHANGE_RATE = 5;
@@ -17,14 +16,6 @@ class  ExchangeRateFormatException extends \Exception
         return new self(
             'Colon is missing in the exchange rates argument',
             self::MISSING_COLON
-        );
-    }
-
-    public static function missingComma()
-    {
-        return new self(
-            'Comma is missing in the exchange rates argument',
-            self::MISSING_COMMA
         );
     }
 

@@ -4,6 +4,10 @@ namespace Finance\Model;
 
 use Finance\Model\Exception\CalculatorException;
 
+/**
+ * Class Calculator is used for calculating totals for finance documents
+ * @package Finance\Model
+ */
 class Calculator
 {
     const CUSTOMER = 'customer';

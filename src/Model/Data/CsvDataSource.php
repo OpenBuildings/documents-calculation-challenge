@@ -27,7 +27,7 @@ class CsvDataSource implements DataSourceInterface
     {
         $this->data = [];
 
-        if (($handle = fopen($filePath, "r")) === false) {
+        if (($handle = @fopen($filePath, "r")) === false) {
             throw DataParseException::canNotOpenFile($filePath);
         }
 
