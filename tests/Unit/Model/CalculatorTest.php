@@ -18,16 +18,17 @@ class CalculatorTest extends TestCase
             ->willReturn($this->getTestData());
 
         $converter = $this->createMock(CurrencyConverter::class);
-        $converter->expects($this->at(0))
-            ->method('convert')
-            ->with('100', 'USD', 'EUR')
-            ->willReturn(200.0);
-
-        $converter->expects($this->at(1))
-            ->method('convert')
-            ->with('200', 'EUR', 'EUR')
-            ->willReturn(200.0);
-
+        $converter->method('convert')
+            ->with($this->anything())
+            ->will($this->returnCallback(function ($amount, $from, $to) {
+                    if ($amount == 100 && $from === 'USD' && $to === 'EUR') {
+                        return 200.0;
+                    } else if ($amount == 200 && $from === 'EUR' && $to === 'EUR') {
+                        return 200.0;
+                    } else if ($amount == 100 && $from === 'EUR' && $to === 'EUR') {
+                        return 100.0;
+                    }
+            }));
 
         $totals = (new Calculator($invoices, $converter, 'EUR'))->getTotals('');
 
@@ -40,7 +41,7 @@ class CalculatorTest extends TestCase
             ],
             'Vendor 2' => [
                 Calculator::CUSTOMER => 'Vendor 2',
-                Calculator::TOTAL => 200,
+                Calculator::TOTAL => 100,
                 Calculator::CURRENCY => 'EUR',
 
             ],
