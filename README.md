@@ -36,7 +36,7 @@ Note, that if we have a credit note, it should subtract from the total of the in
 - The application MUST be covered by unit tests.
 - The application MUST support different currencies.
 - The application MUST validate the input (for example: show an error if an unsupported currency is passed; show an error if a document has a specified parent, but the parent is missing, etc.)
-- Best OOP practices MUST be followed.
+- OOP best practices MUST be followed.
 
 ## Example usage
 
