@@ -45,4 +45,5 @@ Note, that if we have a credit note, it should subtract from the total of the in
 - OOP best practices MUST be followed.
 - The application MUST be supplied in a public git repository.
 - Setup instructions MUST be provided.
+- Your application MUST be fully compatible with the provided [`openapi.yaml` file](./openapi.yaml) definition.
 - Optional: the application should have a client side, implemented in any modern JavaScript framework (e.g. React.js, Angular.js, etc.)

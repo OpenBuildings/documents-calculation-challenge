@@ -1,0 +1,180 @@
+openapi: 3.0.3
+info:
+  title: Invoicing API challenge
+  description: |
+    Design Technologies challenges you to create an API (PHP / Java application) that lets you sum invoice documents in different currencies via a file.
+
+    This is a small task to evaluate potential hires.
+
+    ## The task
+
+    We have a **CSV** file, containing a list of invoices, debit and credit notes in different
+    currencies. **Document structure** with **demo data** can be found in the [`data.csv`](./data.csv).
+
+    API endpoint should allow you to pass:
+    - CSV file
+    - A list of currencies and exchange rates (for example: `EUR:1,USD:0.987,GBP:0.878`)
+    - An output currency (for example: `GBP`)
+    - Filter by a specific customer by VAT number (as an optional input)
+
+    Keep in mind that the exchange rates are always based on the default currency.
+    The default currency is specified by giving it an exchange rate of 1. EUR is used as a default currency only for the example.
+    For example:
+    ```
+    EUR = 1
+    EUR:USD = 0.987
+    EUR:GBP = 0.878
+    ```
+
+    The response should contain **the sum of all documents per customer**. If the optional input filter is used, the functionality should **return only the sum of the
+    invoices for that specific customer**.
+
+    Invoice types:
+    - 1 = invoice
+    - 2 = credit note
+    - 3 = debit note
+
+    Note, that if we have a credit note, it should subtract from the total of the invoice and if we have a debit note, it should add to the sum of the invoice.
+
+
+    ## Requirements
+
+    - The application MUST use only in memory storage.
+    - The application MUST comply to the PSR-2 coding standard and use a PSR-4 autoloader (for PHP applications).
+    - The application MUST be covered by unit tests.
+    - The application MUST support different currencies.
+    - The application MUST validate the input (for example: show an error if an unsupported currency is passed; show an error if a document has a specified parent, but the parent is missing, etc.)
+    - OOP best practices MUST be followed.
+    - The application MUST be supplied in a public git repository.
+    - Setup instructions MUST be provided.
+    - Your application MUST be fully compatible with the provided [`openapi.yaml`](./openapi.yaml) definition.
+    - Optional: the application should have a client side, implemented in any modern JavaScript framework (e.g. React.js, Angular.js, etc.)
+  version: 1.0.0
+servers:
+- url: http://localhost:8080/
+paths:
+  /api/v1/sumInvoices:
+    post:
+      summary: Sum the invoices in the document, using the provided output currencty
+        and currency exchange rates.
+      operationId: sumInvoices
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CalculateRequest'
+            encoding:
+              file:
+                contentType: text/csv
+              exchangeRates:
+                contentType: text/plain
+              outputCurrency:
+                contentType: text/plain
+              customerVat:
+                contentType: text/plain
+            examples:
+              valid:
+                summary: A valid example
+                value:
+                  exchangeRates:
+                    - EUR:1
+                    - USD:0.987
+                    - GBP:0.878
+                  outputCurrency: USD
+              missingDefaultCurrency:
+                summary: In this example there is no default currency (with value 1)
+                value:
+                  exchangeRates:
+                    - EUR:1.75
+                    - USD:0.987
+                    - GBP:0.878
+                  outputCurrency: USD
+              missingOutputCurrency:
+                summary: In this example the output currency is not present in the exchange rates
+                value:
+                  exchangeRates:
+                    - EUR:1
+                    - USD:0.987
+                    - GBP:0.878
+                  outputCurrency: BGN
+              filtered:
+                summary: In this example, we are using the optional customer Vat filter
+                value:
+                  exchangeRates:
+                    - EUR:1
+                    - USD:0.987
+                    - GBP:0.878
+                  outputCurrency: GBP
+                  customerVat: "123456789"
+      responses:
+        404:
+          description: There are no results that match the provided customer filter.
+          content: {}
+        400:
+          description: The provided customer input is not valid and the operation cannot be performed.
+          content: {}
+        200:
+          description: Sum of all documents per customer. If the filter is used, only this customer will be included in the response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculateResponse'
+              example:
+                currency: BGN
+                customers:
+                  - name: Vendor 1
+                    balance: 2323.3
+                  - name: Vendor 2
+                    balance: 98.344
+
+components:
+  schemas:
+    CalculateRequest:
+      required:
+      - file
+      - exchangeRates
+      - outputCurrency
+      type: object
+      properties:
+        file:
+          type: string
+          description: The CSV file, containing a list of invoices, debit and credit
+            notes in different currencies.
+          format: binary
+        exchangeRates:
+          type: array
+          description: |
+            A list of currencies and exchange rates (for example: EUR:1,USD:0.987,GBP:0.878)
+          items:
+            pattern: ^([\w]){3}:\d*(.\d+)*$
+            type: string
+        outputCurrency:
+          pattern: ^([\w]){3}$
+          type: string
+        customerVat:
+          type: string
+          nullable: true
+          description: |
+            This the optional input filter. If specified, the result should contain
+            only one customer matching the one specified in this filter.
+    CalculateResponse:
+      type: object
+      properties:
+        currency:
+          pattern: ^([A-Z]){3}$
+          type: string
+        customers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
+    Customer:
+      required:
+      - balance
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        balance:
+          type: number
